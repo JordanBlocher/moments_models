@@ -1,0 +1,3 @@
+[submodule "record"]
+	path = record
+	url = git@github.com:JordanBlocher/record.git

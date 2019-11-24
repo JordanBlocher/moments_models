@@ -20,14 +20,18 @@ used to make the prediction with the predicted category in the top-left corner.
 
 import os
 import argparse
-import moviepy.editor as mpy
 
 import torch.optim
 import torch.nn.parallel
 from torch.nn import functional as F
 
+# Pre-trained models
 import models
-from utils import extract_frames, load_frames, render_frames
+from utils import extract_frames, load_frames, render_frames, render_video
+
+# Video
+import gtk
+from PIL import Image
 
 
 # options
@@ -35,7 +39,7 @@ parser = argparse.ArgumentParser(description="test TRN on a single video")
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('--video_file', type=str, default=None)
 group.add_argument('--frame_folder', type=str, default=None)
-parser.add_argument('--rendered_output', type=str, default=None)
+parser.add_argument('--rendered_output', type=str, default=None, choices=['y', 'n'])
 parser.add_argument('--num_segments', type=int, default=16)
 parser.add_argument('--arch', type=str, default='resnet3d50', choices=['resnet50', 'resnet3d50'])
 args = parser.parse_args()
@@ -49,7 +53,6 @@ categories = models.load_categories()
 # Load the video frame transform
 transform = models.load_transform()
 
-# Obtain video frames
 if args.frame_folder is not None:
     print('Loading frames in {}'.format(args.frame_folder))
     import glob
@@ -84,6 +87,7 @@ for i in range(0, 5):
 # Render output frames with prediction text.
 if args.rendered_output is not None:
     prediction = categories[idx[0]]
-    rendered_frames = render_frames(frames, prediction)
-    clip = mpy.ImageSequenceClip(rendered_frames, fps=4)
-    clip.write_videofile(args.rendered_output)
+    tmp_dir = render_frames(frames, prediction)
+    print('SAVED TO: ' + tmp_dir)
+
+    render_video(tmp_dir, video_name, len(frames))
