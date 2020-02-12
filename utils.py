@@ -80,5 +80,5 @@ def render_video(tmp_dir, video_name, num_frames=8):
     video = subprocess.Popen(['mencoder', 'mf://'+str(tmp_dir)+'/*.png', '-mf',
     'fps='+str(fps), '-audiofile', 'audiofile.wav', '-oac', 'lavc', '-ovc',
     'lavc', '-lavcopts', 'vcodec=mpeg4:vbitrate=800', '-o', 'prediction.mp4'])
-    #subprocess.call(['rm', '-rf', tmp_dir])
+    subprocess.call(['rm', '-rf', tmp_dir])
     #video = subprocess.Popen(['ffmpeg2theora -F %d -v 10 %s/screen%%04d.png -o' + outfile_name])
