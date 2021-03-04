@@ -6,7 +6,7 @@ We release the pre-trained models trained on [Moments in Time](http://moments.cs
 
 * Clone the code from Github:
 ```
-    git clone --recurse-submodules --remote-submodules https://github.com/metalbubble/moments_models.git
+    git clone --recurse-submodules --remote-submodules git@github.com:publish-perish/moments_models.git
     cd moments_models
 ```
 
